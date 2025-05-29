@@ -54,6 +54,8 @@ kafka-spring-integration-demo/
 
 ```
 
+![Fluxo do Sistema](flow_image.png)
+
 ### Arquivos Principais
 
 -   **`Application.java`**: Ponto de entrada da aplicação Spring Boot, com suporte a agendamento (`@EnableScheduling`).
@@ -323,3 +325,5 @@ Conclusão
 ---------
 
 Este projeto oferece uma simulação realista de um sistema de mensageria com Kafka, Spring Integration e PostgreSQL. Ele demonstra os conceitos fundamentais do Kafka (produção, consumo, partições, grupos) e fornece uma base escalável para experimentação. Use o Kafdrop, PostgreSQL e métricas do Actuator para monitorar o sistema, e escale consumidores para testar o paralelismo.
+
+
