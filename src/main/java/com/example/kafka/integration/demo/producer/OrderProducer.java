@@ -40,6 +40,7 @@ public class OrderProducer {
             order.setProduct(faker.commerce().productName());
             order.setPrice(faker.number().randomDouble(2, 10, 1000));
             order.setTimestamp(System.currentTimeMillis());
+            order.setPriority("HIGH");
             orderInputChannel.send(MessageBuilder.withPayload(order)
                     .setHeader("partitionKey", order.getOrderId())
                     .build());
