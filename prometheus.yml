@@ -1,0 +1,5 @@
+scrape_configs:
+  - job_name: 'kafka-spring-integration-demo'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
