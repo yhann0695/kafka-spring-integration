@@ -1,4 +1,4 @@
-package com.example.kafka.integration.demo.application.model;
+package com.example.kafka.integration.demo.model;
 
 import lombok.Data;
 

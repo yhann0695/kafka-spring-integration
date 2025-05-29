@@ -1,8 +1,8 @@
-package com.example.kafka.integration.demo.application.config;
+package com.example.kafka.integration.demo.config;
 
-import com.example.kafka.integration.demo.adapter.repository.OrderRepository;
-import com.example.kafka.integration.demo.application.model.Order;
-import com.example.kafka.integration.demo.application.model.OrderEntity;
+import com.example.kafka.integration.demo.repository.OrderRepository;
+import com.example.kafka.integration.demo.model.Order;
+import com.example.kafka.integration.demo.model.OrderEntity;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import org.apache.kafka.clients.admin.NewTopic;

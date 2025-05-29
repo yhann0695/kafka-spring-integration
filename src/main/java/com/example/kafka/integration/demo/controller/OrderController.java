@@ -1,6 +1,6 @@
-package com.example.kafka.integration.demo.adapter.http;
+package com.example.kafka.integration.demo.controller;
 
-import com.example.kafka.integration.demo.application.message.producer.OrderProducer;
+import com.example.kafka.integration.demo.producer.OrderProducer;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

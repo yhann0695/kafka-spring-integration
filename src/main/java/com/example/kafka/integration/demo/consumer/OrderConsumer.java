@@ -1,4 +1,4 @@
-package com.example.kafka.integration.demo.application.message.consumer;
+package com.example.kafka.integration.demo.consumer;
 
 import org.springframework.stereotype.Component;
 

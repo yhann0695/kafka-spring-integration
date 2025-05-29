@@ -1,6 +1,6 @@
-package com.example.kafka.integration.demo.application.message.producer;
+package com.example.kafka.integration.demo.producer;
 
-import com.example.kafka.integration.demo.application.model.Order;
+import com.example.kafka.integration.demo.model.Order;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.integration.support.MessageBuilder;
