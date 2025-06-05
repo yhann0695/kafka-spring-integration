@@ -1,24 +1,81 @@
 spring:
+  cloud:
+    function:
+      definition: orderConsumer;urgentOrderConsumer
+    stream:
+      bindings:
+        orderOutput:
+          destination: orders-topic
+          content-type: application/json
+          producer:
+            partition-key-expression: payload.orderId
+            partition-count: 6
+        urgentOrderOutput:
+          destination: urgent-orders-topic
+          content-type: application/json
+          producer:
+            partition-key-expression: payload.orderId
+            partition-count: 6
+        orderConsumer-in-0:
+          destination: orders-topic
+          group: orders-group
+          content-type: application/json
+          consumer:
+            auto-offset-reset: earliest
+        urgentOrderConsumer-in-0:
+          destination: urgent-orders-topic
+          group: urgent-orders-group
+          content-type: application/json
+          consumer:
+            auto-offset-reset: earliest
+      kafka:
+        bindings:
+          orderConsumer-in-0:
+            consumer:
+              auto-offset-reset: earliest
+              dlq-name: orders-dlq-topic
+              max-attempts: 3
+              back-off-initial-interval: 1000
+              back-off-max-interval: 5000
+              back-off-multiplier: 2.0
+              configuration:
+                spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+                spring.deserializer.value.delegate: org.springframework.kafka.support.serializer.JsonDeserializer
+          urgentOrderConsumer-in-0:
+            consumer:
+              auto-offset-reset: earliest
+              dlq-name: orders-dlq-topic
+              max-attempts: 3
+              back-off-initial-interval: 1000
+              back-off-max-interval: 5000
+              back-off-multiplier: 2.0
+              configuration:
+                spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+                spring.deserializer.value.delegate: org.springframework.kafka.support.serializer.JsonDeserializer
+        binder:
+          configuration:
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+            spring.json.trusted.packages: com.example.kafka.integration.demo.model
   kafka:
     bootstrap-servers: localhost:19092,localhost:29092,localhost:39092
+    topic:
+      replication-factor: 3
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      batch-size: 16384
-      linger-ms: 10
+      batch-size: 32768
+      buffer-memory: 33554432
+      linger-ms: 50
     consumer:
-      group-id: orders-group
+      group-id: urgent-orders-group
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    admin:
+      auto-create-topics: true
       properties:
-        spring.json.trusted.packages: com.example.kafka.integration.demo.model
-  integration:
-    kafka:
-      topic:
-        name: orders-topic
-        partitions: 3
-        replication-factor: 3
+        default.topic.config:
+          retention.ms: 604800000 # 7 dias
+          retention.bytes: -1 # Ilimitado
   datasource:
     url: jdbc:postgresql://localhost:5432/orders_db
     username: user
@@ -29,6 +86,13 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+#logging:
+#  level:
+#    org.springframework.cloud.stream: DEBUG
+#    org.apache.kafka: DEBUG
+#    com.example.kafka: DEBUG
+#    org.springframework.context: DEBUG
+#    org.springframework.core.env: DEBUG
 
 management:
   endpoints:
